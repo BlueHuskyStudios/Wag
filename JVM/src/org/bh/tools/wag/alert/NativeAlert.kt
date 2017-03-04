@@ -4,6 +4,8 @@ import org.bh.tools.base.disambiguation.OS
 import org.bh.tools.io.logging.LogLevel
 import org.bh.tools.io.logging.log
 import org.bh.tools.ui.alert.*
+import org.bh.tools.ui.swing.CommonLookAndFeel
+import org.bh.tools.ui.swing.LookAndFeelController
 import java.io.Console
 
 /**
@@ -11,6 +13,14 @@ import java.io.Console
  * @since 2017-02-23
  */
 object NativeAlert {
+    init {
+        if (OS.current.isDesktop) {
+            LookAndFeelController.currentApplicationLookAndFeel = CommonLookAndFeel.native
+        }
+    }
+
+
+
     /**
      * Shows an alert to the user in a native manner, without giving them any options but to continue. This is useful
      * for informing the user of a state that has already occurred. If this is a desktop OS (has a point-and-click UI),
@@ -26,7 +36,7 @@ object NativeAlert {
         return when {
             OS.current.isDesktop -> HuskyOptionPane.showOptionDialog(
                     title = title,
-                    message = "$title\r\n$detail",
+                    message = detail,
                     messageType = JOptionPaneMessageType.info,
                     optionType = JOptionPaneOptionType.ok,
                     allOptions = listOf(AlertOption.ok),
